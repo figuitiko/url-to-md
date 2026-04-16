@@ -3,16 +3,25 @@ import type { Dictionary } from "@/lib/i18n/types";
 export const es = {
   metadata: {
     title: "Site2Markdown",
-    description: "Extraé una página pública en markdown listo para pegar en workflows con LLM.",
+    description:
+      "Extraé una página pública en markdown listo para pegar en workflows con LLM.",
   },
   shell: {
     eyebrow: "Extracción server-first",
-    title: "Convertí una página en markdown limpio sin salir del workbench.",
+    title:
+      "Convierte cualquier página a Markdown limpio sin salir de la plataforma.",
     description:
       "Pegá una URL pública, corré el extractor en el server e inspeccioná el resultado inline como markdown o como vista legible.",
     panelTitle: "Qué optimiza este workbench",
     panelDescription:
       "URLs públicas seguras, extracción legible y markdown que podés inspeccionar antes de copiarlo a tu próximo prompt.",
+    themeToggle: {
+      label: "Tema",
+      light: "Claro",
+      dark: "Oscuro",
+      switchToLight: "Cambiar al tema claro",
+      switchToDark: "Cambiar al tema oscuro",
+    },
     localeSwitcher: {
       switchToEnglish: "Switch to English",
       switchToSpanish: "Cambiar a español",
@@ -37,7 +46,8 @@ export const es = {
     helperSuccessPrefix: "Última extracción lista desde",
     capabilityIdle: "Sin fallback de browser rendering en el MVP",
     capabilityPending: "Buscando y convirtiendo",
-    capabilityNote: "El extractor corre sólo del lado del server y devuelve una página por request.",
+    capabilityNote:
+      "El extractor corre sólo del lado del server y devuelve una página por request.",
   },
   buttons: {
     copy: "Copiar markdown",
@@ -68,26 +78,32 @@ export const es = {
   },
   emptyState: {
     title: "Workbench de resultado",
-    idleDescription: "Pegá una URL pública para generar un artifact de markdown que podés inspeccionar, copiar o descargar.",
-    pendingDescription: "Estamos preparando el área de resultado para la próxima extracción.",
+    idleDescription:
+      "Pegá una URL pública para generar un artifact de markdown que podés inspeccionar, copiar o descargar.",
+    pendingDescription:
+      "Estamos preparando el área de resultado para la próxima extracción.",
     steps: [
       {
         title: "Pegá una URL pública",
-        description: "Pegá una URL pública para iniciar el flujo de extracción. Las direcciones privadas y locales se rechazan antes del fetch.",
+        description:
+          "Pegá una URL pública para iniciar el flujo de extracción. Las direcciones privadas y locales se rechazan antes del fetch.",
       },
       {
         title: "Corré el extractor del server",
-        description: "La página se busca en el server, se limpia con Readability y se transforma a markdown.",
+        description:
+          "La página se busca en el server, se limpia con Readability y se transforma a markdown.",
       },
       {
         title: "Inspeccioná el artifact final",
-        description: "Revisá primero el markdown crudo y después pasá a vista previa si querés una validación rápida.",
+        description:
+          "Revisá primero el markdown crudo y después pasá a vista previa si querés una validación rápida.",
       },
     ],
   },
   inlineError: {
     title: "La conversión falló",
-    description: "Los errores de validación y extracción quedan inline para que puedas corregir el pedido sin perder contexto.",
+    description:
+      "Los errores de validación y extracción quedan inline para que puedas corregir el pedido sin perder contexto.",
     fallback: "No pudimos convertir esa URL. Probá con otra página pública.",
     genericHttpPrefix: "Esa página devolvió un HTTP",
     messages: {
@@ -95,17 +111,23 @@ export const es = {
       INVALID_URL: "Ingresá una URL absoluta.",
       UNSUPPORTED_PROTOCOL: "Ingresá una URL pública HTTP(S).",
       PRIVATE_NETWORK: "Esa URL apunta a una red privada o bloqueada.",
-      HOST_RESOLUTION_FAILED: "No pudimos resolver ese host. Revisá la URL e intentá de nuevo.",
+      HOST_RESOLUTION_FAILED:
+        "No pudimos resolver ese host. Revisá la URL e intentá de nuevo.",
       REDIRECT_MISSING_LOCATION: "Esa página devolvió un redirect inválido.",
-      TOO_MANY_REDIRECTS: "Esa página redirigió demasiadas veces para procesarla con seguridad.",
-      REQUEST_TIMEOUT: "La request agotó el tiempo antes de poder traer la página.",
+      TOO_MANY_REDIRECTS:
+        "Esa página redirigió demasiadas veces para procesarla con seguridad.",
+      REQUEST_TIMEOUT:
+        "La request agotó el tiempo antes de poder traer la página.",
       NON_HTML_CONTENT: "Esa URL no devolvió contenido HTML.",
-      PAGE_TOO_LARGE: "Esa página es demasiado grande para procesarla con seguridad.",
-      NO_READABLE_CONTENT: "No pudimos encontrar contenido legible con sentido en esa página.",
+      PAGE_TOO_LARGE:
+        "Esa página es demasiado grande para procesarla con seguridad.",
+      NO_READABLE_CONTENT:
+        "No pudimos encontrar contenido legible con sentido en esa página.",
       UNKNOWN: "No pudimos convertir esa URL. Probá con otra página pública.",
     },
     http: {
-      blocked: "Esa página está bloqueando el acceso automatizado en este momento.",
+      blocked:
+        "Esa página está bloqueando el acceso automatizado en este momento.",
       notFound: "No se pudo encontrar esa página.",
       server: "Esa página está teniendo un error del server ahora mismo.",
     },
@@ -113,15 +135,18 @@ export const es = {
   loading: {
     eyebrow: "Preparando workspace",
     title: "Cargando Site2Markdown",
-    description: "Estamos levantando la interfaz para que puedas validar la salida markdown en un solo lugar.",
+    description:
+      "Estamos levantando la interfaz para que puedas validar la salida markdown en un solo lugar.",
     cardTitle: "Inicializando interfaz",
   },
   routeError: {
     eyebrow: "Recuperación de runtime",
     title: "La app encontró un error inesperado a nivel de ruta.",
-    description: "Esto es separado de los fallos de extracción. Reiniciá la ruta y volvamos al workbench.",
+    description:
+      "Esto es separado de los fallos de extracción. Reiniciá la ruta y volvamos al workbench.",
     cardTitle: "Error inesperado de la app",
-    cardDescription: "El framework interrumpió la página antes de que el formulario pudiera terminar de renderizar.",
+    cardDescription:
+      "El framework interrumpió la página antes de que el formulario pudiera terminar de renderizar.",
     unknownMessage: "Fallo desconocido a nivel de ruta.",
     retry: "Reintentar",
   },

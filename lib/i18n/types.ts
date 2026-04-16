@@ -11,6 +11,13 @@ export interface Dictionary {
     description: string;
     panelTitle: string;
     panelDescription: string;
+    themeToggle: {
+      label: string;
+      light: string;
+      dark: string;
+      switchToLight: string;
+      switchToDark: string;
+    };
     localeSwitcher: {
       switchToEnglish: string;
       switchToSpanish: string;

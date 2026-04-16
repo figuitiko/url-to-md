@@ -8,7 +8,13 @@ import { DownloadMarkdownButton } from "@/components/download-markdown-button";
 import { MarkdownPreview } from "@/components/markdown-preview";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import type { ConvertSuccessState } from "@/lib/convert-state";
 import type { Dictionary } from "@/lib/i18n/types";
 
@@ -52,7 +58,10 @@ export function MarkdownResult({
     [copy, data.filename, data.siteName, data.title],
   );
 
-  function handleTabKeyDown(event: React.KeyboardEvent<HTMLButtonElement>, currentTab: ResultTab) {
+  function handleTabKeyDown(
+    event: React.KeyboardEvent<HTMLButtonElement>,
+    currentTab: ResultTab,
+  ) {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
       return;
     }
@@ -70,24 +79,29 @@ export function MarkdownResult({
   }
 
   return (
-    <Card className="overflow-hidden border-white/10 bg-white/5 shadow-2xl shadow-black/20">
-      <CardHeader className="gap-5 border-b border-white/10 bg-black/20">
+    <Card className="overflow-hidden border-border bg-surface shadow-workbench">
+      <CardHeader className="gap-5 border-b border-border bg-surface-strong">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
-          <div className="space-y-3">
+          <div className="flex flex-col gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              <Badge className="border-emerald-400/20 bg-emerald-400/10 text-emerald-100">
+              <Badge className="border-success-border bg-success-surface text-success-foreground">
                 <CheckCircle2 className="mr-1 size-3.5" aria-hidden="true" />
                 {copy.badgeReady}
               </Badge>
               {pending ? (
-                <Badge variant="secondary" className="border-white/10 bg-white/10 text-zinc-200">
+                <Badge
+                  variant="secondary"
+                  className="border-border bg-surface text-muted-foreground"
+                >
                   {copy.badgeRefreshing}
                 </Badge>
               ) : null}
             </div>
             <div>
-              <CardTitle className="text-2xl text-white">{data.title ?? copy.untitled}</CardTitle>
-              <CardDescription className="mt-2 flex items-start gap-2 break-all text-sm text-zinc-400">
+              <CardTitle className="text-2xl text-foreground">
+                {data.title ?? copy.untitled}
+              </CardTitle>
+              <CardDescription className="mt-2 flex items-start gap-2 break-all text-sm text-muted-foreground">
                 <Link2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                 {data.sourceUrl}
               </CardDescription>
@@ -96,23 +110,38 @@ export function MarkdownResult({
 
           <div className="flex flex-wrap gap-3">
             <CopyMarkdownButton markdown={data.markdown} copy={buttonCopy} />
-            <DownloadMarkdownButton markdown={data.markdown} filename={data.filename} copy={buttonCopy} />
+            <DownloadMarkdownButton
+              markdown={data.markdown}
+              filename={data.filename}
+              copy={buttonCopy}
+            />
           </div>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3">
           {metadata.map((item) => (
-            <div key={item.label} className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-              <p className="text-xs uppercase tracking-[0.24em] text-zinc-500">{item.label}</p>
-              <p className="mt-2 line-clamp-2 text-sm font-medium text-zinc-100">{item.value}</p>
+            <div
+              key={item.label}
+              className="rounded-2xl border border-border bg-surface-muted px-4 py-3"
+            >
+              <p className="text-xs uppercase tracking-[0.24em] text-subtle-foreground">
+                {item.label}
+              </p>
+              <p className="mt-2 line-clamp-2 text-sm font-medium text-foreground">
+                {item.value}
+              </p>
             </div>
           ))}
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-5 p-4 sm:p-6">
+      <CardContent className="flex flex-col gap-5 p-4 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="inline-flex rounded-2xl border border-white/10 bg-black/30 p-1" role="tablist" aria-label={copy.tabListLabel}>
+          <div
+            className="inline-flex rounded-2xl border border-border bg-surface-strong p-1"
+            role="tablist"
+            aria-label={copy.tabListLabel}
+          >
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const selected = activeTab === tab.value;
@@ -137,8 +166,10 @@ export function MarkdownResult({
               );
             })}
           </div>
-          <p className="text-sm text-zinc-400">
-            {activeTab === "markdown" ? copy.viewDescriptions.markdown : copy.viewDescriptions.preview}
+          <p className="text-sm text-muted-foreground">
+            {activeTab === "markdown"
+              ? copy.viewDescriptions.markdown
+              : copy.viewDescriptions.preview}
           </p>
         </div>
 
@@ -147,9 +178,9 @@ export function MarkdownResult({
             id={panelIds.markdown}
             role="tabpanel"
             aria-labelledby={tabIds.markdown}
-            className="overflow-hidden rounded-[28px] border border-white/10 bg-[#050505]"
+            className="max-h-180 overflow-hidden rounded-[28px] border border-border bg-code-background"
           >
-            <pre className="max-h-[720px] overflow-auto p-5 font-mono text-[13px] leading-6 text-zinc-200">
+            <pre className="h-full overflow-auto p-5 font-mono text-[13px] leading-6 text-code-foreground">
               <code>{data.markdown}</code>
             </pre>
           </div>
@@ -158,7 +189,7 @@ export function MarkdownResult({
             id={panelIds.preview}
             role="tabpanel"
             aria-labelledby={tabIds.preview}
-            className="max-h-[720px] overflow-auto rounded-[28px] border border-white/10 bg-[#050505] p-5"
+            className="max-h-180 overflow-auto rounded-[28px] border border-border bg-code-background p-5"
           >
             <MarkdownPreview markdown={data.markdown} />
           </div>

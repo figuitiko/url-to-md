@@ -9,9 +9,19 @@ import { EmptyResultState } from "@/components/empty-result-state";
 import { ErrorMessage } from "@/components/error-message";
 import { MarkdownResult } from "@/components/markdown-result";
 import { SubmitButton } from "@/components/submit-button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { initialConvertState, type ConvertState, type ConvertSuccessState } from "@/lib/convert-state";
+import {
+  initialConvertState,
+  type ConvertState,
+  type ConvertSuccessState,
+} from "@/lib/convert-state";
 import { getLocalizedConvertErrorMessage } from "@/lib/i18n/error-message";
 import type { Dictionary } from "@/lib/i18n/types";
 
@@ -33,7 +43,9 @@ type LegacyConvertState =
       error?: string;
     };
 
-function normalizeConvertState(state: ConvertState | LegacyConvertState | undefined): ConvertState {
+function normalizeConvertState(
+  state: ConvertState | LegacyConvertState | undefined,
+): ConvertState {
   if (!state || typeof state !== "object") {
     return { status: "idle" };
   }
@@ -43,11 +55,18 @@ function normalizeConvertState(state: ConvertState | LegacyConvertState | undefi
       return { status: "idle" };
     }
 
-    if (state.status === "error" && "errorCode" in state && typeof state.errorCode === "string") {
+    if (
+      state.status === "error" &&
+      "errorCode" in state &&
+      typeof state.errorCode === "string"
+    ) {
       return {
         status: "error",
         errorCode: state.errorCode,
-        errorStatus: "errorStatus" in state && typeof state.errorStatus === "number" ? state.errorStatus : undefined,
+        errorStatus:
+          "errorStatus" in state && typeof state.errorStatus === "number"
+            ? state.errorStatus
+            : undefined,
       };
     }
 
@@ -67,8 +86,14 @@ function normalizeConvertState(state: ConvertState | LegacyConvertState | undefi
         status: "success",
         data: {
           sourceUrl: state.data.sourceUrl,
-          title: "title" in state.data && typeof state.data.title === "string" ? state.data.title : null,
-          siteName: "siteName" in state.data && typeof state.data.siteName === "string" ? state.data.siteName : null,
+          title:
+            "title" in state.data && typeof state.data.title === "string"
+              ? state.data.title
+              : null,
+          siteName:
+            "siteName" in state.data && typeof state.data.siteName === "string"
+              ? state.data.siteName
+              : null,
           markdown: state.data.markdown,
           filename: state.data.filename,
         },
@@ -78,7 +103,13 @@ function normalizeConvertState(state: ConvertState | LegacyConvertState | undefi
     return { status: "idle" };
   }
 
-  if ("ok" in state && state.ok === true && state.data?.sourceUrl && state.data.markdown && state.data.filename) {
+  if (
+    "ok" in state &&
+    state.ok === true &&
+    state.data?.sourceUrl &&
+    state.data.markdown &&
+    state.data.filename
+  ) {
     return {
       status: "success",
       data: {
@@ -108,10 +139,20 @@ function ResultPanel({
 }: Readonly<{
   pending: boolean;
   state: ConvertState;
-  dictionary: Pick<Dictionary, "buttons" | "emptyState" | "inlineError" | "result">;
+  dictionary: Pick<
+    Dictionary,
+    "buttons" | "emptyState" | "inlineError" | "result"
+  >;
 }>) {
   if (state.status === "success") {
-    return <MarkdownResult data={state.data} pending={pending} copy={dictionary.result} buttonCopy={dictionary.buttons} />;
+    return (
+      <MarkdownResult
+        data={state.data}
+        pending={pending}
+        copy={dictionary.result}
+        buttonCopy={dictionary.buttons}
+      />
+    );
   }
 
   if (state.status === "error") {
@@ -130,9 +171,15 @@ function ResultPanel({
 export function UrlSubmitForm({
   dictionary,
 }: Readonly<{
-  dictionary: Pick<Dictionary, "buttons" | "emptyState" | "form" | "inlineError" | "result">;
+  dictionary: Pick<
+    Dictionary,
+    "buttons" | "emptyState" | "form" | "inlineError" | "result"
+  >;
 }>) {
-  const [rawState, formAction, pending] = useActionState(convertUrl, initialConvertState);
+  const [rawState, formAction, pending] = useActionState(
+    convertUrl,
+    initialConvertState,
+  );
   const state = normalizeConvertState(rawState);
   const [url, setUrl] = useState("");
 
@@ -152,21 +199,28 @@ export function UrlSubmitForm({
 
   return (
     <div className="grid gap-6 xl:grid-cols-[minmax(0,24rem)_minmax(0,1fr)]">
-      <Card className="h-fit border-white/10 bg-white/5 shadow-2xl shadow-black/20">
-        <CardHeader className="space-y-4">
+      <Card className="h-fit border-border bg-surface shadow-workbench">
+        <CardHeader className="gap-4">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <CardTitle className="text-xl text-white">{dictionary.form.cardTitle}</CardTitle>
-              <CardDescription className="mt-2 text-sm leading-6 text-zinc-400">{dictionary.form.cardDescription}</CardDescription>
+              <CardTitle className="text-xl text-foreground">
+                {dictionary.form.cardTitle}
+              </CardTitle>
+              <CardDescription className="mt-2 text-sm leading-6 text-muted-foreground">
+                {dictionary.form.cardDescription}
+              </CardDescription>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-black/30 p-2 text-zinc-300">
+            <div className="rounded-2xl border border-border bg-surface-strong p-2 text-muted-foreground">
               <Globe className="size-5" aria-hidden="true" />
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <form action={formAction} className="space-y-4">
-            <label className="space-y-2 text-sm font-medium text-zinc-200" htmlFor="url">
+          <form action={formAction} className="flex flex-col gap-4">
+            <label
+              className="flex flex-col gap-2 text-sm font-medium text-foreground"
+              htmlFor="url"
+            >
               {dictionary.form.label}
               <Input
                 id="url"
@@ -183,18 +237,33 @@ export function UrlSubmitForm({
 
             <div className="flex flex-wrap items-center gap-3">
               <SubmitButton pending={pending} copy={dictionary.buttons} />
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-xs text-zinc-400">
-                {pending ? <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" /> : <Sparkles className="size-3.5" aria-hidden="true" />}
-                {pending ? dictionary.form.capabilityPending : dictionary.form.capabilityIdle}
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface-strong px-3 py-1.5 text-xs text-muted-foreground">
+                {pending ? (
+                  <LoaderCircle
+                    className="size-3.5 animate-spin"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <Sparkles className="size-3.5" aria-hidden="true" />
+                )}
+                {pending
+                  ? dictionary.form.capabilityPending
+                  : dictionary.form.capabilityIdle}
               </div>
             </div>
 
-            <p className="flex items-start gap-2 text-sm leading-6 text-zinc-400" role="status" aria-live="polite">
+            <p
+              className="flex items-start gap-2 text-sm leading-6 text-muted-foreground"
+              role="status"
+              aria-live="polite"
+            >
               <ArrowRight className="mt-1 size-4 shrink-0" aria-hidden="true" />
               <span>{helperText}</span>
             </p>
 
-            <p className="text-xs leading-6 text-zinc-500">{dictionary.form.capabilityNote}</p>
+            <p className="text-xs leading-6 text-subtle-foreground">
+              {dictionary.form.capabilityNote}
+            </p>
           </form>
         </CardContent>
       </Card>
