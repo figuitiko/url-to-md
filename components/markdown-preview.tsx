@@ -81,7 +81,7 @@ export function MarkdownPreview({ markdown }: Readonly<{ markdown: string }>) {
         5: "text-base font-semibold text-white",
         6: "text-sm font-semibold uppercase tracking-[0.18em] text-zinc-300",
       }[heading.level];
-      const tagName = `h${heading.level}` as keyof JSX.IntrinsicElements;
+      const tagName = `h${heading.level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
       elements.push(
         createElement(

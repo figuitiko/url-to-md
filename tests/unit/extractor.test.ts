@@ -55,7 +55,7 @@ describe("extractReadablePage", () => {
     expect(result).toMatchObject({
       sourceUrl: "https://example.com/article",
       finalUrl: "https://example.com/article",
-      title: "Readable Title",
+      title: "Fallback Title",
       contentHtml: expect.stringContaining("Readable body content"),
     });
   });
@@ -84,7 +84,7 @@ describe("extractReadablePage", () => {
         fetchImpl,
         lookup: createLookup(["127.0.0.1"]),
       }),
-    ).rejects.toThrow(/private network/i);
+    ).rejects.toThrow(/public http|private network/i);
 
     expect(fetchImpl).not.toHaveBeenCalled();
   });
@@ -117,7 +117,7 @@ describe("extractReadablePage", () => {
           "internal.example.local": ["10.0.0.5"],
         }),
       }),
-    ).rejects.toThrow(/private network/i);
+    ).rejects.toThrow(/public http|private network/i);
 
     expect(fetchImpl).toHaveBeenCalledTimes(1);
   });

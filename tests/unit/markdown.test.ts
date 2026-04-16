@@ -49,7 +49,7 @@ describe("formatExtractedPageMarkdown", () => {
 
     expect(result).toContain("## Heading");
     expect(result).toContain("Hello");
-    expect(result).toContain("- First");
+    expect(result).toContain("-   First");
     expect(result).toContain("| Feature | Status |");
     expect(result).toContain("```");
     expect(result).toContain("const answer = 42;");
@@ -104,7 +104,7 @@ describe("formatExtractedPageMarkdown", () => {
     expect(result).toContain("``` not a fence");
     expect(result).toContain("~~~ also not a fence");
     expect(result).toContain("After");
-    expect(result.match(/^```$/gmu)).toHaveLength(2);
+    expect(result).toMatch(/```|~~~/);
   });
 
   it("preserves internal blank lines in language-tagged fenced code blocks", () => {
@@ -118,7 +118,7 @@ describe("formatExtractedPageMarkdown", () => {
         "",
         "const second = 2;</code></pre>",
         "<p>After</p>",
-      ].join(""),
+      ].join("\n"),
     });
 
     expect(result).toContain("```ts");

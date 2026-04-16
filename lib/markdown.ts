@@ -30,11 +30,16 @@ function parseFenceStartLine(line: string) {
   const match = line.match(/^[ \t]{0,3}(`{3,}|~{3,})(.*)$/u);
 
   if (!match) return null;
+  const marker = match[1][0];
+
+  if (marker !== "`" && marker !== "~") {
+    return null;
+  }
 
   return {
-    marker: match[1][0],
+    marker,
     length: match[1].length,
-  };
+  } as { marker: "`" | "~"; length: number };
 }
 
 function buildFenceEndPattern(marker: "`" | "~", length: number) {

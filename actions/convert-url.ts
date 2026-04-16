@@ -1,35 +1,12 @@
 "use server";
 
 import { isSite2MarkdownError, type Site2MarkdownErrorCode } from "@/lib/errors";
+import type { ConvertState } from "@/lib/convert-state";
 import { extractReadablePage } from "@/lib/extractor";
 import { formatExtractedPageMarkdown } from "@/lib/markdown";
 import { buildDownloadFilename } from "@/lib/metadata";
 import { normalizePublicUrl } from "@/lib/validations";
 
-export interface ConvertIdleState {
-  status: "idle";
-  message: string;
-}
-
-export interface ConvertErrorState {
-  status: "error";
-  error: string;
-}
-
-export interface ConvertSuccessState {
-  status: "success";
-  data: {
-    sourceUrl: string;
-    title: string | null;
-    siteName: string | null;
-    markdown: string;
-    filename: string;
-  };
-}
-
-export type ConvertState = ConvertIdleState | ConvertErrorState | ConvertSuccessState;
-
-const INITIAL_MESSAGE = "Paste a public URL to extract markdown.";
 const FALLBACK_ERROR_MESSAGE = "We couldn’t convert that URL. Please try another public page.";
 const FRIENDLY_ERROR_MESSAGES = {
   EMPTY_URL: "Enter a URL.",
@@ -45,11 +22,6 @@ const FRIENDLY_ERROR_MESSAGES = {
   NO_READABLE_CONTENT: "We couldn’t find meaningful article content on that page.",
   UNKNOWN: FALLBACK_ERROR_MESSAGE,
 } satisfies Record<Exclude<Site2MarkdownErrorCode, "HTTP_STATUS">, string>;
-
-export const initialConvertState: ConvertState = {
-  status: "idle",
-  message: INITIAL_MESSAGE,
-};
 
 function getUrlFromFormData(formData: FormData) {
   const value = formData.get("url");

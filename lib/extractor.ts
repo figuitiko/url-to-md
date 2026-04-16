@@ -204,6 +204,10 @@ function extractArticleFromHtml(html: string, finalUrl: string) {
     throw new Site2MarkdownError("NO_READABLE_CONTENT", "No meaningful readable content was found on the requested page.");
   }
 
+  if (!article) {
+    throw new Site2MarkdownError("NO_READABLE_CONTENT", "No meaningful readable content was found on the requested page.");
+  }
+
   return {
     title: trimToNull(article.title) ?? trimToNull(dom.window.document.title),
     siteName: trimToNull(article.siteName),

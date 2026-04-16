@@ -3,13 +3,13 @@
 import { useMemo, useState } from "react";
 import { CheckCircle2, Eye, FileText, Link2 } from "lucide-react";
 
-import type { ConvertSuccessState } from "@/actions/convert-url";
 import { CopyMarkdownButton } from "@/components/copy-markdown-button";
 import { DownloadMarkdownButton } from "@/components/download-markdown-button";
 import { MarkdownPreview } from "@/components/markdown-preview";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import type { ConvertSuccessState } from "@/lib/convert-state";
 
 const TABS = [
   { value: "markdown", label: "Markdown", icon: FileText },

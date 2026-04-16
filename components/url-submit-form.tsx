@@ -4,13 +4,96 @@ import { useEffect, useMemo, useState } from "react";
 import { useActionState } from "react";
 import { ArrowRight, Globe, LoaderCircle, Sparkles } from "lucide-react";
 
-import { convertUrl, initialConvertState, type ConvertState } from "@/actions/convert-url";
+import { convertUrl } from "@/actions/convert-url";
 import { EmptyResultState } from "@/components/empty-result-state";
 import { ErrorMessage } from "@/components/error-message";
 import { MarkdownResult } from "@/components/markdown-result";
 import { SubmitButton } from "@/components/submit-button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { initialConvertState, type ConvertState, type ConvertSuccessState } from "@/lib/convert-state";
+
+const IDLE_HELPER_TEXT = "Paste a public URL to extract markdown.";
+
+type LegacyConvertState =
+  | {
+      ok: true;
+      data?: {
+        sourceUrl?: string;
+        title?: ConvertSuccessState["data"]["title"];
+        siteName?: ConvertSuccessState["data"]["siteName"];
+        markdown?: string;
+        filename?: string;
+      };
+    }
+  | {
+      ok: false;
+      error?: string;
+    };
+
+function normalizeConvertState(state: ConvertState | LegacyConvertState | undefined): ConvertState {
+  if (!state || typeof state !== "object") {
+    return { status: "idle", message: IDLE_HELPER_TEXT };
+  }
+
+  if ("status" in state) {
+    if (state.status === "idle" && "message" in state && typeof state.message === "string") {
+      return state;
+    }
+
+    if (state.status === "error" && "error" in state && typeof state.error === "string") {
+      return state;
+    }
+
+    if (
+      state.status === "success" &&
+      "data" in state &&
+      state.data &&
+      typeof state.data === "object" &&
+      "sourceUrl" in state.data &&
+      typeof state.data.sourceUrl === "string" &&
+      "markdown" in state.data &&
+      typeof state.data.markdown === "string" &&
+      "filename" in state.data &&
+      typeof state.data.filename === "string"
+    ) {
+      return {
+        status: "success",
+        data: {
+          sourceUrl: state.data.sourceUrl,
+          title: "title" in state.data && typeof state.data.title === "string" ? state.data.title : null,
+          siteName: "siteName" in state.data && typeof state.data.siteName === "string" ? state.data.siteName : null,
+          markdown: state.data.markdown,
+          filename: state.data.filename,
+        },
+      };
+    }
+
+    return { status: "idle", message: IDLE_HELPER_TEXT };
+  }
+
+  if ("ok" in state && state.ok === true && state.data?.sourceUrl && state.data.markdown && state.data.filename) {
+    return {
+      status: "success",
+      data: {
+        sourceUrl: state.data.sourceUrl,
+        title: state.data.title ?? null,
+        siteName: state.data.siteName ?? null,
+        markdown: state.data.markdown,
+        filename: state.data.filename,
+      },
+    };
+  }
+
+  if ("ok" in state && state.ok === false) {
+    return {
+      status: "error",
+      error: state.error ?? "We couldn’t convert that URL. Please try another public page.",
+    };
+  }
+
+  return { status: "idle", message: IDLE_HELPER_TEXT };
+}
 
 function ResultPanel({ pending, state }: Readonly<{ pending: boolean; state: ConvertState }>) {
   if (state.status === "success") {
@@ -25,7 +108,8 @@ function ResultPanel({ pending, state }: Readonly<{ pending: boolean; state: Con
 }
 
 export function UrlSubmitForm() {
-  const [state, formAction, pending] = useActionState(convertUrl, initialConvertState);
+  const [rawState, formAction, pending] = useActionState(convertUrl, initialConvertState);
+  const state = normalizeConvertState(rawState);
   const [url, setUrl] = useState("");
 
   useEffect(() => {
@@ -37,7 +121,9 @@ export function UrlSubmitForm() {
   const helperText = useMemo(() => {
     if (state.status === "idle") return state.message;
     if (state.status === "error") return "Fix the URL and re-run the conversion in place.";
-    return `Latest extraction ready from ${state.data.sourceUrl}`;
+    return state.data?.sourceUrl
+      ? `Latest extraction ready from ${state.data.sourceUrl}`
+      : IDLE_HELPER_TEXT;
   }, [state]);
 
   return (
