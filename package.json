@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "build": "next build",
     "lint": "eslint .",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
