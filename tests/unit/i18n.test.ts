@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import { getDictionary } from "@/lib/i18n/get-dictionary";
-import { defaultLocale, getLocaleOrNull, isLocale, locales } from "@/lib/i18n/config";
+import {
+  defaultLocale,
+  getLocaleOrNull,
+  isLocale,
+  locales,
+} from "@/lib/i18n/config";
 
 describe("i18n config", () => {
   it("exposes the supported locales and default locale", () => {
@@ -23,6 +28,9 @@ describe("getDictionary", () => {
 
     expect(dictionary.metadata.title).toContain("Site2Markdown");
     expect(dictionary.form.label).toBe("Public page URL");
+    expect(dictionary.shell.themeToggle.switchToLight).toBe(
+      "Switch to light theme",
+    );
   });
 
   it("returns Spanish UI copy for the Spanish locale", async () => {
@@ -30,5 +38,6 @@ describe("getDictionary", () => {
 
     expect(dictionary.shell.eyebrow).toBe("Extracción server-first");
     expect(dictionary.result.tabs.preview).toBe("Vista previa");
+    expect(dictionary.shell.themeToggle.dark).toBe("Oscuro");
   });
 });

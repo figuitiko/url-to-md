@@ -18,13 +18,15 @@ export default function Loading() {
   return (
     <main className="min-h-screen bg-background">
       <AppShell locale={locale} copy={dictionary.shell}>
-        <Card className="border-white/10 bg-white/5">
+        <Card className="border-border bg-surface shadow-workbench">
           <CardHeader>
-            <CardTitle>{dictionary.loading.cardTitle}</CardTitle>
+            <CardTitle className="text-foreground">
+              {dictionary.loading.cardTitle}
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="h-12 animate-pulse rounded-2xl bg-white/10" />
-            <div className="h-[420px] animate-pulse rounded-3xl bg-white/5" />
+          <CardContent className="flex flex-col gap-3">
+            <div className="h-12 animate-pulse rounded-2xl bg-surface-strong" />
+            <div className="h-105 animate-pulse rounded-3xl bg-surface-muted" />
           </CardContent>
         </Card>
       </AppShell>

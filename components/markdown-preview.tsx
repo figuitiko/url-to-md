@@ -4,7 +4,11 @@ function getSafeHref(rawHref: string) {
   try {
     const href = new URL(rawHref, "https://site2markdown-preview.local");
 
-    if (href.protocol === "http:" || href.protocol === "https:" || href.protocol === "mailto:") {
+    if (
+      href.protocol === "http:" ||
+      href.protocol === "https:" ||
+      href.protocol === "mailto:"
+    ) {
       return rawHref;
     }
 
@@ -36,7 +40,7 @@ function renderInline(text: string) {
         href={safeHref}
         target="_blank"
         rel="noreferrer"
-        className="text-sky-300 underline decoration-sky-400/50 underline-offset-4 transition hover:text-sky-200"
+        className="link-color underline decoration-sky-400/50 underline-offset-4 transition"
       >
         {match[1]}
       </a>
@@ -74,14 +78,20 @@ export function MarkdownPreview({ markdown }: Readonly<{ markdown: string }>) {
     const heading = headingLevel(line);
     if (heading) {
       const className = {
-        1: "text-3xl font-semibold text-white",
-        2: "text-2xl font-semibold text-white",
-        3: "text-xl font-semibold text-white",
-        4: "text-lg font-semibold text-white",
-        5: "text-base font-semibold text-white",
-        6: "text-sm font-semibold uppercase tracking-[0.18em] text-zinc-300",
+        1: "text-3xl font-semibold text-foreground",
+        2: "text-2xl font-semibold text-foreground",
+        3: "text-xl font-semibold text-foreground",
+        4: "text-lg font-semibold text-foreground",
+        5: "text-base font-semibold text-foreground",
+        6: "text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground",
       }[heading.level];
-      const tagName = `h${heading.level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+      const tagName = `h${heading.level}` as
+        | "h1"
+        | "h2"
+        | "h3"
+        | "h4"
+        | "h5"
+        | "h6";
 
       elements.push(
         createElement(
@@ -98,7 +108,7 @@ export function MarkdownPreview({ markdown }: Readonly<{ markdown: string }>) {
     }
 
     if (isHorizontalRule(line)) {
-      elements.push(<hr key={`hr-${index}`} className="my-6 border-white/10" />);
+      elements.push(<hr key={`hr-${index}`} className="my-6 border-border" />);
       index += 1;
       continue;
     }
@@ -113,9 +123,16 @@ export function MarkdownPreview({ markdown }: Readonly<{ markdown: string }>) {
       }
       index += 1;
       elements.push(
-        <div key={`code-${index}`} className="my-5 overflow-hidden rounded-2xl border border-white/10 bg-zinc-950">
-          {language ? <div className="border-b border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-zinc-500">{language}</div> : null}
-          <pre className="overflow-auto p-4 font-mono text-sm leading-6 text-zinc-200">
+        <div
+          key={`code-${index}`}
+          className="my-5 overflow-hidden rounded-2xl border border-border bg-surface-strong"
+        >
+          {language ? (
+            <div className="border-b border-border px-4 py-2 text-xs uppercase tracking-[0.18em] text-subtle-foreground">
+              {language}
+            </div>
+          ) : null}
+          <pre className="overflow-auto p-4 font-mono text-sm leading-6 text-code-foreground">
             <code>{codeLines.join("\n")}</code>
           </pre>
         </div>,
@@ -125,12 +142,18 @@ export function MarkdownPreview({ markdown }: Readonly<{ markdown: string }>) {
 
     if (/^>\s?/u.test(line)) {
       const quoteLines: string[] = [];
-      while (index < lines.length && /^>\s?/u.test((lines[index] ?? "").trimEnd())) {
+      while (
+        index < lines.length &&
+        /^>\s?/u.test((lines[index] ?? "").trimEnd())
+      ) {
         quoteLines.push((lines[index] ?? "").trimEnd().replace(/^>\s?/u, ""));
         index += 1;
       }
       elements.push(
-        <blockquote key={`quote-${index}`} className="my-5 border-l-2 border-sky-400/50 pl-4 text-sm leading-7 text-zinc-300">
+        <blockquote
+          key={`quote-${index}`}
+          className="my-5 border-l-2 border-sky-400/50 pl-4 text-sm leading-7 text-muted-foreground"
+        >
           {quoteLines.map((quoteLine, quoteIndex) => (
             <p key={`${quoteLine}-${quoteIndex}`}>{renderInline(quoteLine)}</p>
           ))}
@@ -141,12 +164,18 @@ export function MarkdownPreview({ markdown }: Readonly<{ markdown: string }>) {
 
     if (/^[-*+]\s+/u.test(line)) {
       const items: string[] = [];
-      while (index < lines.length && /^[-*+]\s+/u.test((lines[index] ?? "").trimEnd())) {
+      while (
+        index < lines.length &&
+        /^[-*+]\s+/u.test((lines[index] ?? "").trimEnd())
+      ) {
         items.push((lines[index] ?? "").trimEnd().replace(/^[-*+]\s+/u, ""));
         index += 1;
       }
       elements.push(
-        <ul key={`ul-${index}`} className="my-5 list-disc space-y-2 pl-6 text-sm leading-7 text-zinc-200">
+        <ul
+          key={`ul-${index}`}
+          className="my-5 flex list-disc flex-col gap-2 pl-6 text-sm leading-7 text-foreground"
+        >
           {items.map((item, itemIndex) => (
             <li key={`${item}-${itemIndex}`}>{renderInline(item)}</li>
           ))}
@@ -157,12 +186,18 @@ export function MarkdownPreview({ markdown }: Readonly<{ markdown: string }>) {
 
     if (/^\d+\.\s+/u.test(line)) {
       const items: string[] = [];
-      while (index < lines.length && /^\d+\.\s+/u.test((lines[index] ?? "").trimEnd())) {
+      while (
+        index < lines.length &&
+        /^\d+\.\s+/u.test((lines[index] ?? "").trimEnd())
+      ) {
         items.push((lines[index] ?? "").trimEnd().replace(/^\d+\.\s+/u, ""));
         index += 1;
       }
       elements.push(
-        <ol key={`ol-${index}`} className="my-5 list-decimal space-y-2 pl-6 text-sm leading-7 text-zinc-200">
+        <ol
+          key={`ol-${index}`}
+          className="my-5 flex list-decimal flex-col gap-2 pl-6 text-sm leading-7 text-foreground"
+        >
           {items.map((item, itemIndex) => (
             <li key={`${item}-${itemIndex}`}>{renderInline(item)}</li>
           ))}
@@ -176,7 +211,14 @@ export function MarkdownPreview({ markdown }: Readonly<{ markdown: string }>) {
     while (index < lines.length) {
       const next = (lines[index] ?? "").trimEnd();
       if (!next.trim()) break;
-      if (headingLevel(next) || isHorizontalRule(next) || /^```/u.test(next) || /^>\s?/u.test(next) || /^[-*+]\s+/u.test(next) || /^\d+\.\s+/u.test(next)) {
+      if (
+        headingLevel(next) ||
+        isHorizontalRule(next) ||
+        /^```/u.test(next) ||
+        /^>\s?/u.test(next) ||
+        /^[-*+]\s+/u.test(next) ||
+        /^\d+\.\s+/u.test(next)
+      ) {
         break;
       }
       paragraphLines.push(next);
@@ -184,7 +226,10 @@ export function MarkdownPreview({ markdown }: Readonly<{ markdown: string }>) {
     }
 
     elements.push(
-      <p key={`paragraph-${index}`} className="my-4 text-sm leading-7 text-zinc-200 sm:text-[15px]">
+      <p
+        key={`paragraph-${index}`}
+        className="my-4 text-sm leading-7 text-foreground sm:text-[15px]"
+      >
         {renderInline(paragraphLines.join(" "))}
       </p>,
     );

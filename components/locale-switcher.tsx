@@ -51,11 +51,13 @@ export function LocaleSwitcher({
   return (
     <Link
       href={href}
-      aria-label={nextLocale === "en" ? copy.switchToEnglish : copy.switchToSpanish}
+      aria-label={
+        nextLocale === "en" ? copy.switchToEnglish : copy.switchToSpanish
+      }
       prefetch={false}
       className={cn(
         buttonVariants({ variant: "ghost", size: "sm" }),
-        "gap-2 rounded-full border border-white/10 bg-black/20 px-3 text-zinc-200 hover:bg-white/10 hover:text-white",
+        "gap-2 rounded-full border border-border bg-surface-strong px-3 text-foreground hover:bg-surface hover:text-foreground",
       )}
     >
       <Languages className="size-4" aria-hidden="true" />
