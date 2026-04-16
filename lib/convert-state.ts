@@ -1,11 +1,13 @@
+import type { Site2MarkdownErrorCode } from "@/lib/errors";
+
 export interface ConvertIdleState {
   status: "idle";
-  message: string;
 }
 
 export interface ConvertErrorState {
   status: "error";
-  error: string;
+  errorCode: Site2MarkdownErrorCode;
+  errorStatus?: number;
 }
 
 export interface ConvertSuccessState {
@@ -23,5 +25,4 @@ export type ConvertState = ConvertIdleState | ConvertErrorState | ConvertSuccess
 
 export const initialConvertState: ConvertState = {
   status: "idle",
-  message: "Paste a public URL to extract markdown.",
 };

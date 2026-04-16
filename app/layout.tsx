@@ -1,22 +1,24 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import type { ReactNode } from "react";
 
 import "@/app/globals.css";
+import { coerceLocale } from "@/lib/i18n/config";
 
 export const metadata: Metadata = {
-  title: "Site2Markdown",
-  description:
-    "Extract one public web page into markdown that is ready to paste into LLM workflows.",
+  title: {
+    default: "Site2Markdown",
+    template: "%s | Site2Markdown",
+  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+  const requestHeaders = await headers();
+  const locale = coerceLocale(requestHeaders.get("x-site-locale"));
+
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="bg-background text-foreground antialiased">
-        {children}
-      </body>
+    <html lang={locale} suppressHydrationWarning>
+      <body className="bg-background text-foreground antialiased">{children}</body>
     </html>
   );
 }

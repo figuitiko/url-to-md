@@ -10,22 +10,30 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ConvertSuccessState } from "@/lib/convert-state";
+import type { Dictionary } from "@/lib/i18n/types";
 
-const TABS = [
-  { value: "markdown", label: "Markdown", icon: FileText },
-  { value: "preview", label: "Preview", icon: Eye },
-] as const;
+function getTabs(copy: Dictionary["result"]) {
+  return [
+    { value: "markdown", label: copy.tabs.markdown, icon: FileText },
+    { value: "preview", label: copy.tabs.preview, icon: Eye },
+  ] as const;
+}
 
-type ResultTab = (typeof TABS)[number]["value"];
+type ResultTab = "markdown" | "preview";
 
 export function MarkdownResult({
   data,
   pending,
+  copy,
+  buttonCopy,
 }: Readonly<{
   data: ConvertSuccessState["data"];
   pending: boolean;
+  copy: Dictionary["result"];
+  buttonCopy: Dictionary["buttons"];
 }>) {
   const [activeTab, setActiveTab] = useState<ResultTab>("markdown");
+  const tabs = getTabs(copy);
   const tabIds = {
     markdown: "result-tab-markdown",
     preview: "result-tab-preview",
@@ -37,11 +45,11 @@ export function MarkdownResult({
 
   const metadata = useMemo(
     () => [
-      { label: "Title", value: data.title ?? "Unknown" },
-      { label: "Site", value: data.siteName ?? "Unknown" },
-      { label: "Filename", value: data.filename },
+      { label: copy.metadata.title, value: data.title ?? copy.unknown },
+      { label: copy.metadata.site, value: data.siteName ?? copy.unknown },
+      { label: copy.metadata.filename, value: data.filename },
     ],
-    [data.filename, data.siteName, data.title],
+    [copy, data.filename, data.siteName, data.title],
   );
 
   function handleTabKeyDown(event: React.KeyboardEvent<HTMLButtonElement>, currentTab: ResultTab) {
@@ -51,10 +59,10 @@ export function MarkdownResult({
 
     event.preventDefault();
 
-    const currentIndex = TABS.findIndex((tab) => tab.value === currentTab);
+    const currentIndex = tabs.findIndex((tab) => tab.value === currentTab);
     const direction = event.key === "ArrowRight" ? 1 : -1;
-    const nextIndex = (currentIndex + direction + TABS.length) % TABS.length;
-    const nextTab = TABS[nextIndex];
+    const nextIndex = (currentIndex + direction + tabs.length) % tabs.length;
+    const nextTab = tabs[nextIndex];
     const nextTabId = tabIds[nextTab.value];
 
     setActiveTab(nextTab.value);
@@ -69,16 +77,16 @@ export function MarkdownResult({
             <div className="flex flex-wrap items-center gap-2">
               <Badge className="border-emerald-400/20 bg-emerald-400/10 text-emerald-100">
                 <CheckCircle2 className="mr-1 size-3.5" aria-hidden="true" />
-                Extraction ready
+                {copy.badgeReady}
               </Badge>
               {pending ? (
                 <Badge variant="secondary" className="border-white/10 bg-white/10 text-zinc-200">
-                  Refreshing…
+                  {copy.badgeRefreshing}
                 </Badge>
               ) : null}
             </div>
             <div>
-              <CardTitle className="text-2xl text-white">{data.title ?? "Untitled page"}</CardTitle>
+              <CardTitle className="text-2xl text-white">{data.title ?? copy.untitled}</CardTitle>
               <CardDescription className="mt-2 flex items-start gap-2 break-all text-sm text-zinc-400">
                 <Link2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                 {data.sourceUrl}
@@ -87,8 +95,8 @@ export function MarkdownResult({
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <CopyMarkdownButton markdown={data.markdown} />
-            <DownloadMarkdownButton markdown={data.markdown} filename={data.filename} />
+            <CopyMarkdownButton markdown={data.markdown} copy={buttonCopy} />
+            <DownloadMarkdownButton markdown={data.markdown} filename={data.filename} copy={buttonCopy} />
           </div>
         </div>
 
@@ -104,8 +112,8 @@ export function MarkdownResult({
 
       <CardContent className="space-y-5 p-4 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="inline-flex rounded-2xl border border-white/10 bg-black/30 p-1" role="tablist" aria-label="Result views">
-            {TABS.map((tab) => {
+          <div className="inline-flex rounded-2xl border border-white/10 bg-black/30 p-1" role="tablist" aria-label={copy.tabListLabel}>
+            {tabs.map((tab) => {
               const Icon = tab.icon;
               const selected = activeTab === tab.value;
 
@@ -130,7 +138,7 @@ export function MarkdownResult({
             })}
           </div>
           <p className="text-sm text-zinc-400">
-            {activeTab === "markdown" ? "Exact output, ready to copy." : "Rendered approximation for quick QA."}
+            {activeTab === "markdown" ? copy.viewDescriptions.markdown : copy.viewDescriptions.preview}
           </p>
         </div>
 

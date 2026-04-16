@@ -4,8 +4,15 @@ import { useEffect, useState } from "react";
 import { Check, Copy } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import type { Dictionary } from "@/lib/i18n/types";
 
-export function CopyMarkdownButton({ markdown }: Readonly<{ markdown: string }>) {
+export function CopyMarkdownButton({
+  markdown,
+  copy,
+}: Readonly<{
+  markdown: string;
+  copy: Dictionary["buttons"];
+}>) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -27,7 +34,7 @@ export function CopyMarkdownButton({ markdown }: Readonly<{ markdown: string }>)
   return (
     <Button type="button" variant="secondary" onClick={handleCopy} className="gap-2">
       {copied ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
-      {copied ? "Copied" : "Copy markdown"}
+      {copied ? copy.copied : copy.copy}
     </Button>
   );
 }
