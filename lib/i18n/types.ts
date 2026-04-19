@@ -53,7 +53,11 @@ export interface Dictionary {
   buttons: {
     copy: string;
     copied: string;
+    copySuccess: string;
+    copyError: string;
     download: string;
+    downloadSuccess: string;
+    downloadError: string;
     submit: string;
     submitting: string;
   };
@@ -113,5 +117,7 @@ export interface Dictionary {
     cardDescription: string;
     unknownMessage: string;
     retry: string;
+    backHome: string;
+    technicalDetails: string;
   };
 }

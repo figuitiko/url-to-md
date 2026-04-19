@@ -19,14 +19,37 @@ export default function Loading() {
     <main className="min-h-screen bg-background">
       <AppShell locale={locale} copy={dictionary.shell}>
         <Card className="border-border bg-surface shadow-workbench">
-          <CardHeader>
+          <CardHeader className="gap-4">
             <CardTitle className="text-foreground">
               {dictionary.loading.cardTitle}
             </CardTitle>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground" role="status" aria-live="polite">
+              <div className="size-2 rounded-full bg-sky-400 animate-pulse" />
+              <span>{dictionary.loading.description}</span>
+            </div>
           </CardHeader>
-          <CardContent className="flex flex-col gap-3">
-            <div className="h-12 animate-pulse rounded-2xl bg-surface-strong" />
-            <div className="h-105 animate-pulse rounded-3xl bg-surface-muted" />
+          <CardContent className="grid gap-6 xl:grid-cols-[minmax(0,24rem)_minmax(0,1fr)]">
+            <div className="space-y-4 rounded-[28px] border border-border bg-surface-strong p-5">
+              <div className="h-5 w-32 animate-pulse rounded-full bg-surface-muted" />
+              <div className="h-11 animate-pulse rounded-2xl bg-surface-muted" />
+              <div className="h-11 animate-pulse rounded-2xl bg-surface-muted" />
+              <div className="h-11 w-40 animate-pulse rounded-2xl bg-surface-muted" />
+              <div className="h-4 w-3/4 animate-pulse rounded-full bg-surface-muted" />
+              <div className="h-4 w-2/3 animate-pulse rounded-full bg-surface-muted" />
+            </div>
+
+            <div className="space-y-4 rounded-[28px] border border-border bg-surface-strong p-5">
+              <div className="flex gap-3">
+                <div className="h-7 w-32 animate-pulse rounded-full bg-surface-muted" />
+                <div className="h-7 w-28 animate-pulse rounded-full bg-surface-muted" />
+              </div>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div className="h-20 animate-pulse rounded-2xl bg-surface-muted" />
+                <div className="h-20 animate-pulse rounded-2xl bg-surface-muted" />
+                <div className="h-20 animate-pulse rounded-2xl bg-surface-muted" />
+              </div>
+              <div className="h-80 animate-pulse rounded-[28px] bg-surface-muted" />
+            </div>
           </CardContent>
         </Card>
       </AppShell>

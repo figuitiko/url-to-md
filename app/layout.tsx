@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import "@/app/globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { coerceLocale } from "@/lib/i18n/config";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: {
@@ -30,6 +31,7 @@ export default async function RootLayout({
           storageKey="site2markdown-theme"
         >
           {children}
+          <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>
     </html>

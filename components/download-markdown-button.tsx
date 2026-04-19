@@ -1,6 +1,7 @@
 "use client";
 
 import { Download } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import type { Dictionary } from "@/lib/i18n/types";
@@ -15,15 +16,20 @@ export function DownloadMarkdownButton({
   copy: Dictionary["buttons"];
 }>) {
   function handleDownload() {
-    const blob = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
-    const objectUrl = URL.createObjectURL(blob);
-    const link = document.createElement("a");
+    try {
+      const blob = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
 
-    link.href = objectUrl;
-    link.download = filename;
-    link.click();
+      link.href = objectUrl;
+      link.download = filename;
+      link.click();
 
-    URL.revokeObjectURL(objectUrl);
+      URL.revokeObjectURL(objectUrl);
+      toast.success(copy.downloadSuccess);
+    } catch {
+      toast.error(copy.downloadError);
+    }
   }
 
   return (

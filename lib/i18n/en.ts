@@ -59,7 +59,11 @@ export const en = {
   buttons: {
     copy: "Copy markdown",
     copied: "Copied",
+    copySuccess: "Markdown copied",
+    copyError: "We couldn’t copy that markdown. Try again.",
     download: "Download .md",
+    downloadSuccess: "Markdown download started",
+    downloadError: "We couldn’t start that download. Try again.",
     submit: "Extract markdown",
     submitting: "Converting…",
   },
@@ -154,13 +158,15 @@ export const en = {
   },
   routeError: {
     eyebrow: "Runtime recovery",
-    title: "The app hit an unexpected route-level error.",
+    title: "The app hit a route-level hiccup.",
     description:
-      "This is separate from extraction failures. Reset the route and let’s get you back to the workbench.",
-    cardTitle: "Unexpected app error",
+      "This is separate from conversion failures. You can retry this screen or head back to the workbench.",
+    cardTitle: "This screen needs a refresh",
     cardDescription:
-      "The framework interrupted the page before the form could finish rendering.",
-    unknownMessage: "Unknown route-level failure.",
+      "The page stopped rendering before the workbench could fully load.",
+    unknownMessage: "The page ran into an unexpected issue.",
     retry: "Try again",
+    backHome: "Back to the workbench",
+    technicalDetails: "Technical details",
   },
 } satisfies Dictionary;

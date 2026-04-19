@@ -60,7 +60,11 @@ export const es = {
   buttons: {
     copy: "Copiar markdown",
     copied: "Copiado",
+    copySuccess: "Markdown copiado",
+    copyError: "No pudimos copiar ese markdown. Probá de nuevo.",
     download: "Descargar .md",
+    downloadSuccess: "Ya empezó la descarga del markdown",
+    downloadError: "No pudimos iniciar esa descarga. Probá de nuevo.",
     submit: "Extraer markdown",
     submitting: "Convirtiendo…",
   },
@@ -156,13 +160,15 @@ export const es = {
   },
   routeError: {
     eyebrow: "Recuperación de runtime",
-    title: "La app encontró un error inesperado a nivel de ruta.",
+    title: "La app tuvo un tropiezo a nivel de ruta.",
     description:
-      "Esto es separado de los fallos de extracción. Reiniciá la ruta y volvamos al workbench.",
-    cardTitle: "Error inesperado de la app",
+      "Esto es aparte de los errores de conversión. Podés reintentar esta pantalla o volver al workbench.",
+    cardTitle: "Esta pantalla necesita refrescarse",
     cardDescription:
-      "El framework interrumpió la página antes de que el formulario pudiera terminar de renderizar.",
-    unknownMessage: "Fallo desconocido a nivel de ruta.",
+      "La página dejó de renderizar antes de que el workbench pudiera cargarse completo.",
+    unknownMessage: "La página tuvo un problema inesperado.",
     retry: "Reintentar",
+    backHome: "Volver al workbench",
+    technicalDetails: "Detalles técnicos",
   },
 } satisfies Dictionary;

@@ -1,9 +1,11 @@
 "use client";
 
 import { AlertTriangle, RotateCcw } from "lucide-react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 
 import { AppShell } from "@/components/app-shell";
+import { buttonVariants } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,6 +28,8 @@ export default function Error({
   const locale = coerceLocale(params?.locale);
   const dictionary = dictionaries[locale];
 
+  const homeHref = `/${locale}`;
+
   return (
     <main className="min-h-screen bg-background">
       <AppShell locale={locale} copy={dictionary.shell}>
@@ -39,14 +43,32 @@ export default function Error({
               {dictionary.routeError.cardDescription}
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <p className="mb-4 rounded-2xl border border-danger-border bg-danger-panel px-4 py-3 text-sm leading-6 text-danger-foreground">
-              {error.message || dictionary.routeError.unknownMessage}
+          <CardContent className="space-y-4">
+            <p className="rounded-2xl border border-danger-border bg-danger-panel px-4 py-3 text-sm leading-6 text-danger-foreground">
+              {dictionary.routeError.unknownMessage}
             </p>
-            <Button onClick={reset} className="gap-2">
-              <RotateCcw className="size-4" aria-hidden="true" />
-              {dictionary.routeError.retry}
-            </Button>
+
+            <div className="flex flex-wrap gap-3">
+              <Button onClick={reset} className="gap-2">
+                <RotateCcw className="size-4" aria-hidden="true" />
+                {dictionary.routeError.retry}
+              </Button>
+              <Link
+                href={homeHref}
+                className={buttonVariants({ variant: "secondary" })}
+              >
+                {dictionary.routeError.backHome}
+              </Link>
+            </div>
+
+            {error.digest ? (
+              <details className="rounded-2xl border border-danger-border/70 bg-danger-panel/60 px-4 py-3 text-sm text-danger-foreground">
+                <summary className="cursor-pointer font-medium">
+                  {dictionary.routeError.technicalDetails}
+                </summary>
+                <p className="mt-2 break-all text-danger-muted">{error.digest}</p>
+              </details>
+            ) : null}
           </CardContent>
         </Card>
       </AppShell>

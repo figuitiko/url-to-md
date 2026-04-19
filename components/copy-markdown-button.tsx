@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Check, Copy } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import type { Dictionary } from "@/lib/i18n/types";
@@ -26,8 +27,10 @@ export function CopyMarkdownButton({
     try {
       await navigator.clipboard.writeText(markdown);
       setCopied(true);
+      toast.success(copy.copySuccess);
     } catch {
       setCopied(false);
+      toast.error(copy.copyError);
     }
   }
 
