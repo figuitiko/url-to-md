@@ -12,7 +12,10 @@ describe("MarkdownResult", () => {
     render(
       <MarkdownResult
         data={{
-          sourceUrl: "https://example.com/articulo",
+          source: {
+            kind: "url",
+            url: "https://example.com/articulo",
+          },
           title: "Artículo",
           siteName: "Ejemplo",
           markdown: "# Hola",
@@ -21,11 +24,38 @@ describe("MarkdownResult", () => {
         pending={false}
         copy={dictionary.result}
         buttonCopy={dictionary.buttons}
-      />,
+      />, 
     );
 
     expect(screen.getByText(/extracción lista/i)).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /vista previa/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /copiar markdown/i })).toBeInTheDocument();
+  });
+
+  it("shows page count metadata for PDF sources", async () => {
+    const dictionary = await getDictionary("en");
+
+    render(
+      <MarkdownResult
+        data={{
+          source: {
+            kind: "pdf",
+            fileName: "paper.pdf",
+            pageCount: 3,
+          },
+          title: "Paper",
+          siteName: null,
+          markdown: "# Extracted PDF",
+          filename: "paper.md",
+        }}
+        pending={false}
+        copy={dictionary.result}
+        buttonCopy={dictionary.buttons}
+      />,
+    );
+
+    expect(screen.getByText("paper.pdf")).toBeInTheDocument();
+    expect(screen.getByText("Pages")).toBeInTheDocument();
+    expect(screen.getByText("3")).toBeInTheDocument();
   });
 });

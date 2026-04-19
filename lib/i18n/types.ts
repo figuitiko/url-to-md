@@ -34,14 +34,21 @@ export interface Dictionary {
   form: {
     cardTitle: string;
     cardDescription: string;
+    modeLabel: string;
+    modeUrl: string;
+    modePdf: string;
     label: string;
     placeholder: string;
-    helperIdle: string;
+    pdfLabel: string;
+    helperIdleUrl: string;
+    helperIdlePdf: string;
     helperError: string;
     helperSuccessPrefix: string;
-    capabilityIdle: string;
+    capabilityIdleUrl: string;
+    capabilityIdlePdf: string;
     capabilityPending: string;
-    capabilityNote: string;
+    capabilityNoteUrl: string;
+    capabilityNotePdf: string;
   };
   buttons: {
     copy: string;
@@ -67,6 +74,7 @@ export interface Dictionary {
     metadata: {
       title: string;
       site: string;
+      pages: string;
       filename: string;
     };
   };

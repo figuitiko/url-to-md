@@ -49,14 +49,21 @@ export function MarkdownResult({
     preview: "result-panel-preview",
   } as const;
 
-  const metadata = useMemo(
-    () => [
+  const metadata = useMemo(() => {
+    if (data.source.kind === "pdf") {
+      return [
+        { label: copy.metadata.title, value: data.title ?? copy.unknown },
+        { label: copy.metadata.pages, value: String(data.source.pageCount) },
+        { label: copy.metadata.filename, value: data.filename },
+      ];
+    }
+
+    return [
       { label: copy.metadata.title, value: data.title ?? copy.unknown },
       { label: copy.metadata.site, value: data.siteName ?? copy.unknown },
       { label: copy.metadata.filename, value: data.filename },
-    ],
-    [copy, data.filename, data.siteName, data.title],
-  );
+    ];
+  }, [copy, data]);
 
   function handleTabKeyDown(
     event: React.KeyboardEvent<HTMLButtonElement>,
@@ -103,7 +110,9 @@ export function MarkdownResult({
               </CardTitle>
               <CardDescription className="mt-2 flex items-start gap-2 break-all text-sm text-muted-foreground">
                 <Link2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-                {data.sourceUrl}
+                {data.source.kind === "url"
+                  ? data.source.url
+                  : data.source.fileName}
               </CardDescription>
             </div>
           </div>

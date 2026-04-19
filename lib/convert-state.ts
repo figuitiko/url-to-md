@@ -10,10 +10,21 @@ export interface ConvertErrorState {
   errorStatus?: number;
 }
 
+export type ConvertSourceData =
+  | {
+      kind: "url";
+      url: string;
+    }
+  | {
+      kind: "pdf";
+      fileName: string;
+      pageCount: number;
+    };
+
 export interface ConvertSuccessState {
   status: "success";
   data: {
-    sourceUrl: string;
+    source: ConvertSourceData;
     title: string | null;
     siteName: string | null;
     markdown: string;
