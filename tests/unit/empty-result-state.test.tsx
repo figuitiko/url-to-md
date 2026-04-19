@@ -9,6 +9,6 @@ describe("EmptyResultState", () => {
     render(<EmptyResultState copy={en.emptyState} />);
 
     expect(screen.getByRole("heading", { name: /result workbench/i })).toBeInTheDocument();
-    expect(screen.getByText(/paste a public url to generate a markdown artifact/i)).toBeInTheDocument();
+    expect(screen.getByText(/paste a public url or upload a pdf to generate a markdown artifact/i)).toBeInTheDocument();
   });
 });

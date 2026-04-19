@@ -36,18 +36,26 @@ export const es = {
     },
   },
   form: {
-    cardTitle: "URL de origen",
+    cardTitle: "Entrada de origen",
     cardDescription:
-      "Pegá un artículo público o una página de documentación. El server la va a buscar, extraer y formatear como markdown.",
+      "Elegí un modo de origen. Podés usar una URL pública o subir un PDF de texto para convertirlo a markdown.",
+    modeLabel: "Modo de origen",
+    modeUrl: "URL pública",
+    modePdf: "Subir PDF",
     label: "URL pública de la página",
     placeholder: "https://example.com/articulo",
-    helperIdle: "Pegá una URL pública para extraer markdown.",
-    helperError: "Corregí la URL y volvé a correr la conversión inline.",
+    pdfLabel: "Archivo PDF",
+    helperIdleUrl: "Pegá una URL pública para extraer markdown.",
+    helperIdlePdf: "Subí un PDF (máx 10MB, hasta 200 páginas).",
+    helperError: "Corregí la entrada y volvé a correr la conversión inline.",
     helperSuccessPrefix: "Última extracción lista desde",
-    capabilityIdle: "Sin fallback de browser rendering en el MVP",
+    capabilityIdleUrl: "Sin fallback de browser rendering en el MVP",
+    capabilityIdlePdf: "Sólo PDFs de texto en el MVP (sin OCR)",
     capabilityPending: "Buscando y convirtiendo",
-    capabilityNote:
+    capabilityNoteUrl:
       "El extractor corre sólo del lado del server y devuelve una página por request.",
+    capabilityNotePdf:
+      "El procesamiento de PDF corre en server, es efímero y devuelve un solo artifact markdown por upload.",
   },
   buttons: {
     copy: "Copiar markdown",
@@ -73,25 +81,26 @@ export const es = {
     metadata: {
       title: "Título",
       site: "Sitio",
+      pages: "Páginas",
       filename: "Archivo",
     },
   },
   emptyState: {
     title: "Workbench de resultado",
     idleDescription:
-      "Pegá una URL pública para generar un artifact de markdown que podés inspeccionar, copiar o descargar.",
+      "Pegá una URL pública o subí un PDF para generar un artifact markdown que podés inspeccionar, copiar o descargar.",
     pendingDescription:
       "Estamos preparando el área de resultado para la próxima extracción.",
     steps: [
       {
-        title: "Pegá una URL pública",
+        title: "Elegí el origen",
         description:
-          "Pegá una URL pública para iniciar el flujo de extracción. Las direcciones privadas y locales se rechazan antes del fetch.",
+          "Usá una URL pública o un upload de PDF. Las direcciones privadas y locales se rechazan antes del fetch.",
       },
       {
         title: "Corré el extractor del server",
         description:
-          "La página se busca en el server, se limpia con Readability y se transforma a markdown.",
+          "El origen se procesa en el server y se transforma a markdown.",
       },
       {
         title: "Inspeccioná el artifact final",
@@ -104,7 +113,7 @@ export const es = {
     title: "La conversión falló",
     description:
       "Los errores de validación y extracción quedan inline para que puedas corregir el pedido sin perder contexto.",
-    fallback: "No pudimos convertir esa URL. Probá con otra página pública.",
+    fallback: "No pudimos convertir esa entrada. Probá de nuevo.",
     genericHttpPrefix: "Esa página devolvió un HTTP",
     messages: {
       EMPTY_URL: "Ingresá una URL.",
@@ -123,7 +132,13 @@ export const es = {
         "Esa página es demasiado grande para procesarla con seguridad.",
       NO_READABLE_CONTENT:
         "No pudimos encontrar contenido legible con sentido en esa página.",
-      UNKNOWN: "No pudimos convertir esa URL. Probá con otra página pública.",
+      PDF_FILE_REQUIRED: "Subí un archivo PDF.",
+      PDF_INVALID_TYPE: "Subí un archivo PDF válido.",
+      PDF_TOO_LARGE: "Ese PDF supera el límite de 10MB.",
+      PDF_TOO_MANY_PAGES: "Ese PDF supera el límite de 200 páginas.",
+      PDF_PARSE_FAILED: "No pudimos parsear ese archivo PDF.",
+      PDF_NO_TEXT_CONTENT: "Ese PDF no contiene texto extraíble.",
+      UNKNOWN: "No pudimos convertir esa entrada. Probá de nuevo.",
     },
     http: {
       blocked:

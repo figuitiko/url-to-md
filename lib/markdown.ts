@@ -9,7 +9,16 @@ export interface ExtractedPageMarkdownInput {
   contentHtml: string;
 }
 
+export interface ExtractedPdfMarkdownInput {
+  fileName: string;
+  title: string | null;
+  pageCount: number;
+  retrievedAt: string;
+  pages: string[];
+}
+
 const FALLBACK_TEXT = "Unknown";
+const PDF_EMPTY_PAGE_TEXT = "_No extractable text on this page._";
 
 function createTurndownService() {
   const service = new TurndownService({
@@ -118,9 +127,36 @@ function buildMetadataHeader(input: Pick<ExtractedPageMarkdownInput, "sourceUrl"
   ].join("\n");
 }
 
+function buildPdfMetadataHeader(input: Pick<ExtractedPdfMarkdownInput, "fileName" | "title" | "pageCount" | "retrievedAt">) {
+  return [
+    "# Extracted PDF",
+    "",
+    `- Source File: ${input.fileName}`,
+    `- Title: ${input.title ?? FALLBACK_TEXT}`,
+    `- Pages: ${input.pageCount}`,
+    `- Retrieved At: ${input.retrievedAt}`,
+    "",
+    "---",
+  ].join("\n");
+}
+
+function formatPdfPage(pageText: string, index: number) {
+  const normalized = normalizeBlockSpacing(pageText);
+  const content = normalized || PDF_EMPTY_PAGE_TEXT;
+
+  return [`## Page ${index + 1}`, "", content].join("\n");
+}
+
 export function formatExtractedPageMarkdown(input: ExtractedPageMarkdownInput) {
   const body = convertHtmlToMarkdown(input.contentHtml);
   const header = buildMetadataHeader(input);
 
   return body ? `${header}\n\n${body}` : header;
+}
+
+export function formatExtractedPdfMarkdown(input: ExtractedPdfMarkdownInput) {
+  const header = buildPdfMetadataHeader(input);
+  const pages = input.pages.map((pageText, index) => formatPdfPage(pageText, index)).join("\n\n");
+
+  return pages ? `${header}\n\n${pages}` : header;
 }

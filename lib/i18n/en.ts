@@ -35,18 +35,26 @@ export const en = {
     },
   },
   form: {
-    cardTitle: "Source URL",
+    cardTitle: "Source input",
     cardDescription:
-      "Paste a public article or documentation page. The server will fetch, extract, and format it into markdown.",
+      "Choose a source mode. Use a public URL or upload one text-based PDF to convert it into markdown.",
+    modeLabel: "Source mode",
+    modeUrl: "Public URL",
+    modePdf: "PDF upload",
     label: "Public page URL",
     placeholder: "https://example.com/article",
-    helperIdle: "Paste a public URL to extract markdown.",
-    helperError: "Fix the URL and re-run the conversion in place.",
+    pdfLabel: "PDF file",
+    helperIdleUrl: "Paste a public URL to extract markdown.",
+    helperIdlePdf: "Upload one PDF file (max 10MB, up to 200 pages).",
+    helperError: "Fix the input and re-run the conversion in place.",
     helperSuccessPrefix: "Latest extraction ready from",
-    capabilityIdle: "No browser rendering fallback in MVP",
+    capabilityIdleUrl: "No browser rendering fallback in MVP",
+    capabilityIdlePdf: "Text-based PDFs only in MVP (no OCR)",
     capabilityPending: "Fetching and converting",
-    capabilityNote:
+    capabilityNoteUrl:
       "The extractor stays server-side and returns one page per request.",
+    capabilityNotePdf:
+      "PDF processing is server-side, ephemeral, and returns one markdown artifact per upload.",
   },
   buttons: {
     copy: "Copy markdown",
@@ -72,25 +80,26 @@ export const en = {
     metadata: {
       title: "Title",
       site: "Site",
+      pages: "Pages",
       filename: "Filename",
     },
   },
   emptyState: {
     title: "Result workbench",
     idleDescription:
-      "Paste a public URL to generate a markdown artifact you can inspect, copy, or download.",
+      "Paste a public URL or upload a PDF to generate a markdown artifact you can inspect, copy, or download.",
     pendingDescription:
       "We’re preparing the result area for the next extraction.",
     steps: [
       {
-        title: "Paste a public URL",
+        title: "Choose a source",
         description:
-          "Paste a public URL to start the extraction flow. Private and local addresses are rejected before fetch.",
+          "Use a public URL or one PDF upload. Private and local addresses are rejected before fetch.",
       },
       {
         title: "Run the server extractor",
         description:
-          "The page is fetched on the server, cleaned with Readability, and transformed into markdown.",
+          "The source is processed on the server and transformed into markdown.",
       },
       {
         title: "Inspect the final artifact",
@@ -103,7 +112,7 @@ export const en = {
     title: "Conversion failed",
     description:
       "Friendly validation and extraction errors stay inline so you can correct the request without losing context.",
-    fallback: "We couldn’t convert that URL. Please try another public page.",
+    fallback: "We couldn’t convert that input. Please try again.",
     genericHttpPrefix: "That page returned an HTTP",
     messages: {
       EMPTY_URL: "Enter a URL.",
@@ -122,7 +131,13 @@ export const en = {
       PAGE_TOO_LARGE: "That page is too large to process safely.",
       NO_READABLE_CONTENT:
         "We couldn’t find meaningful article content on that page.",
-      UNKNOWN: "We couldn’t convert that URL. Please try another public page.",
+      PDF_FILE_REQUIRED: "Upload a PDF file.",
+      PDF_INVALID_TYPE: "Upload a valid PDF file.",
+      PDF_TOO_LARGE: "That PDF exceeds the 10MB upload limit.",
+      PDF_TOO_MANY_PAGES: "That PDF exceeds the 200-page limit.",
+      PDF_PARSE_FAILED: "We couldn’t parse that PDF file.",
+      PDF_NO_TEXT_CONTENT: "That PDF does not contain extractable text.",
+      UNKNOWN: "We couldn’t convert that input. Please try again.",
     },
     http: {
       blocked: "That page is blocking automated access right now.",

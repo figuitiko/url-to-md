@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatExtractedPageMarkdown } from "@/lib/markdown";
+import { formatExtractedPageMarkdown, formatExtractedPdfMarkdown } from "@/lib/markdown";
 
 describe("formatExtractedPageMarkdown", () => {
   it("prepends the metadata header in the product shape", () => {
@@ -125,4 +125,22 @@ describe("formatExtractedPageMarkdown", () => {
     expect(result).toContain("const first = 1;\n\nconst second = 2;");
     expect(result).toContain("```\n\nAfter");
   });
+
+  it("formats extracted PDF content with page separators", () => {
+    const result = formatExtractedPdfMarkdown({
+      fileName: "sample.pdf",
+      title: "Sample PDF",
+      pageCount: 2,
+      retrievedAt: "2026-04-15T00:00:00.000Z",
+      pages: ["First page text", ""],
+    });
+
+    expect(result).toContain("# Extracted PDF");
+    expect(result).toContain("- Source File: sample.pdf");
+    expect(result).toContain("## Page 1");
+    expect(result).toContain("First page text");
+    expect(result).toContain("## Page 2");
+    expect(result).toContain("_No extractable text on this page._");
+  });
+
 });
